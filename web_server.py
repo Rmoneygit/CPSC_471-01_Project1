@@ -6,7 +6,10 @@ serverSocket = socket(AF_INET, SOCK_STREAM)
 
 # TASK 1
 #Fill in start
-
+HOST = '127.0.0.1'
+PORT = 45678
+serverSocket.bind((HOST, PORT))
+serverSocket.listen()
 #Fill in end
 
 while True:
@@ -14,18 +17,19 @@ while True:
    print('Ready to serve...')
 
    # TASK 2
-   connectionSocket, addr = #Fill in start  #Fill in end
+   connectionSocket, addr = serverSocket.accept() #Fill in start  #Fill in end
 
    try:
 
       # TASK 3
-      message = #Fill in start      #Fill in end
+      message = connectionSocket.recv(1024) #Fill in start      #Fill in end
 
       filename = message.split()[1]
       f = open(filename[1:])
+      print('Received request for: ', filename)
 
       # TASK 4
-      outputdata = #Fill in start       #Fill in end
+      outputdata = "" #Fill in start       #Fill in end
 
       # TASK 5
       #Send one HTTP header line into socket
@@ -39,7 +43,7 @@ while True:
       connectionSocket.send("\r\n".encode())
       connectionSocket.close()
    except IOError:
-
+      print('Houston, we have a problem.')
       # TASK 6
       #Send response message for file not found
       #Fill in start
