@@ -9,7 +9,7 @@ serverSocket = socket(AF_INET, SOCK_STREAM)
 HOST = '127.0.0.1'
 PORT = 45678
 serverSocket.bind((HOST, PORT))
-serverSocket.listen()
+serverSocket.listen(1)
 #Fill in end
 
 while True:
@@ -22,19 +22,19 @@ while True:
    try:
 
       # TASK 3
-      message = connectionSocket.recv(1024) #Fill in start      #Fill in end
+      message = connectionSocket.recv(1024).decode() #Fill in start      #Fill in end
 
       filename = message.split()[1]
       f = open(filename[1:])
       print('Received request for: ', filename)
 
       # TASK 4
-      outputdata = "" #Fill in start       #Fill in end
+      outputdata = f.read() #Fill in start       #Fill in end
 
       # TASK 5
       #Send one HTTP header line into socket
       #Fill in start
-      
+      connectionSocket.send(bytes('HTTP/1.1 200 OK\r\n\r\n', 'UTF-8'))
       #Fill in end
 
       #Send the content of the requested file to the client
@@ -43,17 +43,16 @@ while True:
       connectionSocket.send("\r\n".encode())
       connectionSocket.close()
    except IOError:
-      print('Houston, we have a problem.')
       # TASK 6
       #Send response message for file not found
       #Fill in start
-      
+      connectionSocket.send(bytes('HTTP/1.1 404 Not found\r\n\r\n', 'UTF-8'))
       #Fill in end
 
       # TASK 7
       #Close client socket
       #Fill in start
-      
+      connectionSocket.close()
       #Fill in end
 
 serverSocket.close()
